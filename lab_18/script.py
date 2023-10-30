@@ -2,9 +2,10 @@
 
 def main():
 
-    name_input = input ("Please enter your name: ")
-    dayOfWeek_input = input ("What is the current day of the week: ")
+    name = input ("Please enter your name: ")
+    dayOfWeek = input ("What is the current day of the week: ")
 
-    print("Hello " + name_input + " Happy " + dayOfWeek_input + "!")
+    print(f"Hello {name}! Happy {dayOfWeek}!")
 
 main()
+
