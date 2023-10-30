@@ -7,5 +7,6 @@ def main():
 
     print(f"Hello {name}! Happy {dayOfWeek}!")
 
-main()
+if __name__ == "__main__":
+    main()
 
