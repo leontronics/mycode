@@ -53,7 +53,7 @@ def start_quiz(lightsaber_questions):
     display_result(max_color)
 
 # Main function to display the menu and handle user choices
-def main_menu():
+def main():
     while True:
         clear_display()
         print('Star Wars Lightsaber Color Quiz\n')
@@ -69,4 +69,5 @@ def main_menu():
             break
 
 # Start the app
-main_menu()
+if __name__ == "__main__":
+    main()
