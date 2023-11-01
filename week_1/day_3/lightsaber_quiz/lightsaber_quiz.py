@@ -12,13 +12,11 @@ def get_user_input(prompt, valid_choices):
     while True:
         try:
             choice = int(input(prompt))
-            # Check if the user's choice is within the valid choices
             if choice in valid_choices:
                 return choice
             else:
                 raise ValueError
         except ValueError:
-            # Notify the user of the valid input choices
             print(f"\nInvalid input, please choose one of the following numbers: {', '.join(map(str, valid_choices))}.")
 
 # Function to display the user's lightsaber color and its meaning
@@ -70,5 +68,5 @@ def main_menu():
             print('\nThank you for playing! May the Force be with You.\n')
             break
 
-# Start the app by calling the main menu function
+# Start the app
 main_menu()
