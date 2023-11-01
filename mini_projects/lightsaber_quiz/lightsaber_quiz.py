@@ -2,6 +2,7 @@
 
 from lightsaber_db import lightsaber_questions, lightsaber_colors
 import os
+import random
 
 # Function to clear the terminal or command prompt display
 def clear_display():
@@ -30,22 +31,33 @@ def display_result(max_color):
 def start_quiz(lightsaber_questions):
     # Dictionary to store the count of each lightsaber color based on user's answers
     results = {}
-    total_questions = len(lightsaber_questions)
+
+    # Convert the dictionary to a list and shuffle the order
+    lightsaber_questions_shuffled = list(lightsaber_questions.items())
+    random.shuffle(lightsaber_questions_shuffled)
+    total_questions = len(lightsaber_questions_shuffled)
     
-    # Loop through each question and its associated answers
-    for index, (question, answers) in enumerate(lightsaber_questions.items(), 1):
+    # Loop through each shuffled question and its associated answers
+    for index, (question, answers) in enumerate(lightsaber_questions_shuffled, 1):
         clear_display()
         print(f'Question {index} of {total_questions}: {question}\n')
-        # Display each answer option for the current question
-        for option_index, answer in enumerate(answers.keys(), 1):
+        
+        # Shuffle the answers for the current question
+        answers_shuffled = list(answers.keys())
+        random.shuffle(answers_shuffled)
+        
+        # Display each shuffled answer option for the current question
+        for option_index, answer in enumerate(answers_shuffled, 1):
             print(f'{option_index}. {answer}')
         
         # Get the user's choice for the current question
         choice = get_user_input('\nEnter your choice (1 - 4): ', range(1, 5))
-        selected_answer = list(answers.keys())[choice - 1]
+        selected_answer = answers_shuffled[choice - 1]
         selected_color = answers[selected_answer]
+        
         # Update the results dictionary with the selected color
         results[selected_color] = results.get(selected_color, 0) + 1
+
 
     # Determine the most frequently selected color
     max_color = max(results, key=results.get)

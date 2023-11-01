@@ -83,7 +83,7 @@ lightsaber_questions = {
         'To gain power.': 'Yellow',
         'To explore its mysteries.': 'Orange'
     },
-    'Finally, why do you want a lightsaber?': {
+    'Why do you want a lightsaber?': {
         'To defend the innocent.': 'Blue',
         'To delve deeper into the Force.': 'Green',
         'To enhance my power.': 'Red',
