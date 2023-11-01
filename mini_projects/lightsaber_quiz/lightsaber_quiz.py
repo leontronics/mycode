@@ -1,8 +1,12 @@
 #!/usr/bin/env python3
 
 from lightsaber_db import lightsaber_questions, lightsaber_colors
+from colorama import init, Fore, Style
 import os
 import random
+
+# Initialize the colorama library for colored terminal text
+init(autoreset=True)
 
 # Function to clear the terminal or command prompt display
 def clear_display():
@@ -20,10 +24,27 @@ def get_user_input(prompt, valid_choices):
         except ValueError:
             print(f"\nInvalid input, please choose one of the following numbers: {', '.join(map(str, valid_choices))}.")
 
+# Mapping of lightsaber colors to their corresponding terminal text colors
+COLOR_MAPPING = {
+    'Blue': Fore.BLUE,
+    'Green': Fore.GREEN,
+    'Red': Fore.RED,
+    'Purple': Fore.MAGENTA,
+    'White': Fore.WHITE,
+    'Black': Fore.BLACK,
+    'Yellow': Fore.YELLOW,
+    'Orange': Fore.LIGHTYELLOW_EX
+}
+
+# Function to retrieve the color based on the lightsaber color
+def get_color_for_result(max_color):
+    return COLOR_MAPPING.get(max_color)
+
 # Function to display the user's lightsaber color and its meaning
 def display_result(max_color):
     clear_display()
-    print(f'Your lightsaber color is: {max_color}\n')
+    lightsaber_color = get_color_for_result(max_color)
+    print(Style.BRIGHT + lightsaber_color + f'Your lightsaber color is: {max_color}\n')
     print(lightsaber_colors[max_color])
     input('\nPlease press the Enter key to return to the main menu.')
 
