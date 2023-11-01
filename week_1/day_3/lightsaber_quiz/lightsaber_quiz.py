@@ -1,3 +1,5 @@
+#!/usr/bin/env python3
+
 from lightsaber_db import lightsaber_questions, lightsaber_colors
 import os
 
