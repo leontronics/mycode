@@ -15,7 +15,7 @@ data_dictionary = {
 
 
 def clear_display():
-    os.system('clear')
+    os.system('clear' if os.name == 'posix' else 'cls')
 
 def post_action_prompt():
     choice = input("\nReturn to Main Menu (y/n): ").strip().lower()
