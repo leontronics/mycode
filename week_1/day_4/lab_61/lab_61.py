@@ -9,11 +9,11 @@ def get_max_beers(prompt):
     while True:
         try:
             value = int(input(prompt))
-            if value < 0:
+            if value < 0 or value > 100:
                 raise ValueError
             return value
         except ValueError:
-            print('It has to be a non-negative number. Please try again.')
+            print('It has to be an integer between 0 and 100. Please try again.')
 
 def sing():
     max_beers = get_max_beers('\nEnter the maximum number of beers on the wall: ')
