@@ -1,4 +1,4 @@
-#/usr/bin/python3
+#!/usr/bin/python3
 """A basic threading example | rzfeeser@alta3.com"""
 
 # Make a thread that simulates a NASA count down
