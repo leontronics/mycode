@@ -190,19 +190,20 @@ Use your skills wisely to defeat enemies, collect items, and save your allies!
                         self.player.inventory.append('Princess Leia')
                         self.player.current_room.allies.remove(ally_name)
                         print("You have freed Princess Leia! Now escape the Death Star!")
-                    elif ally_name == 'r2-d2':
+                    elif ally_name == 'r2-d2' and 'access card' in self.player.inventory:
                         self.rooms['Control Room'].locked_items['security codes'] = False
                         self.player.inventory.append('R2-D2')
                         self.player.current_room.allies.remove(ally_name)
                         print("R2-D2 has unlocked the security codes in the Control Room!")
                     else:
-                        print(f"You have freed {ally_name}!")
+                        print(f"You need the proper item to free {ally_name}!")
                 else:
                     print(f"You cannot free {ally_name} while enemies are in the room!")
             else:
                 print(f"There is no {ally_name} here to free.")
         else:
             print("Free who?")
+
 
     def exit_command(self, _):
         print("Thank you for playing. May the Force be with You!")

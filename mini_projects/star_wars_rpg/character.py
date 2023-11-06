@@ -46,16 +46,20 @@ class Player(Character):
             print("You can't pick up items while enemies are in the room!")
             return
         if item in self.current_room.items:
+            if item == 'security codes' and 'R2-D2' not in self.inventory:
+                print("You can't get the security codes without R2-D2's help!")
+                return
             if item in self.current_room.locked_items and self.current_room.locked_items[item]:
-                print(f"You can't get the {item} yet!")
-            else:
-                self.inventory.append(item)
-                self.current_room.items.remove(item)
-                print(f'{item} got!')
-                if item == 'access card':
-                    self.current_room.trigger_trap(game)
+                print(f"The {item} is locked and cannot be picked up yet.")
+                return
+            self.inventory.append(item)
+            self.current_room.items.remove(item)
+            print(f'{item} got!')
+            if item == 'access card':
+                self.current_room.trigger_trap(game)
         else:
             print(f"Can't get {item}!")
+
 
 class Enemy(Character):
     def __init__(self, name, description, health, inventory=None):
