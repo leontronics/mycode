@@ -5,4 +5,4 @@ echo "id_rsa*" >> ~/mycode/.gitignore
 echo "*.log" >> ~/mycode/.gitignore
 echo "*.key" >> ~/mycode/.gitignore
 echo "id_rsa*" >> ~/mycode/.gitignore
-/home/student/mycode/week_2/day_2/lab_95/nasa/.env
+~/mycode/week_2/day_2/lab_95/nasa/.env
