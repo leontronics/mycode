@@ -10,7 +10,7 @@ NASAAPI = "https://api.nasa.gov/planetary/apod?"
 
 def main():
     ## Define creds
-    with open("/home/student/nasa.creds") as mycreds:
+    with open("nasa_cred.txt") as mycreds:
         nasacreds = mycreds.read()
 
     ## remove any "extra" new line feeds on our key
@@ -46,4 +46,3 @@ def main():
     ## webbrowser.open(decodeapod["url"])
 if __name__ == "__main__":
     main()
-
