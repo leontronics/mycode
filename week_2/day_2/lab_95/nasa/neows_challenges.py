@@ -11,7 +11,6 @@ NEO_FEED_URL = 'https://api.nasa.gov/neo/rest/v1/feed?'
 
 
 def get_asteroid_data(start_date, end_date):
-    #Fetches asteroid data from NASA's API within the specified date range.
     params = {
         'start_date': start_date,
         'end_date': end_date,
@@ -23,7 +22,6 @@ def get_asteroid_data(start_date, end_date):
 
 
 def find_extreme_asteroids(asteroid_data):
-    #Finds the largest, fastest, and closest asteroids from the dataset.
     largest = {'name': '', 'diameter': 0}
     fastest = {'name': '', 'speed': 0}
     closest = {'name': '', 'distance': float('inf')}
