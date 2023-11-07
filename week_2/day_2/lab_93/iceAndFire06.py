@@ -1,58 +1,61 @@
 #!/usr/bin/python3
-# documentation for this API is at
-# https://anapioficeandfire.com/Documentation
+# Documentation for this API is at https://anapioficeandfire.com/Documentation
 
 import requests
 
 AOIF_CHAR = "https://www.anapioficeandfire.com/api/characters/"
 
-# check on the names of data passed
-def name_finder(got_list):
-    names = []  # list to return back of decoded names
-    for x in got_list:
-        # send HTTP GET to one of the entries within the list
-        r = requests.get(x)
-        decodedjson = r.json()  # decode the JSON on the response
-        names.append(decodedjson.get("name", "Unknown"))  # this returns the housename and adds it to our list
+# Function to fetch data from a given URL
+def fetch_data(url):
+    response = requests.get(url)
+    response.raise_for_status()  
+    return response.json() 
+
+# Function to get the character's name or their first alias if the name is not available
+def get_character_name_or_alias(character_data):
+    return character_data.get("name") or (character_data.get("aliases")[0] if character_data.get("aliases") else "Unknown")
+
+# Function to get names from a list of URLs (used for fetching names of books and houses)
+def get_names_from_urls(url_list):
+    names = []  
+    for url in url_list:
+        try:
+            data = fetch_data(url) 
+            names.append(data.get("name", "Unknown"))  
+        except requests.HTTPError:
+            names.append("Unknown")  
     return names
 
+# Function to print a list of items with a title
+def print_list(title, items):
+    if items:
+        print(f"\n{title}:")
+        for item in items:
+            print(f"  {item}") 
+    else:
+        print(f"\n{title}: None") 
+
 def main():
-    # Ask user for input
-    got_charToLookup = input("Pick a number between 1 and 1000 to return info on a GoT character! ")
+    got_char_to_lookup = input("Pick a number between 1 and 1000 to return info on a GoT character! ")
 
-    # Send HTTPS GET to the API of ICE and Fire character resource
-    gotresp = requests.get(AOIF_CHAR + got_charToLookup)
+    try:
+        character_data = fetch_data(AOIF_CHAR + got_char_to_lookup)  
+        character_name = get_character_name_or_alias(character_data).strip() or "Unknown"  
 
-    # Decode the response
-    got_dj = gotresp.json()
+        print(f"\nCharacter Information:\nName/Alias: {character_name}")
 
-    # Get the character's name or their first alias if the name is not available or is an empty string
-    character_name = got_dj.get("name") if got_dj.get("name") else (got_dj.get("aliases")[0] if got_dj.get("aliases") else "Unknown")
+        allegiances = get_names_from_urls(character_data.get("allegiances", [])) 
+        print_list("Allegiances", allegiances)  
 
-    # Ensure that we don't print an empty string for the name
-    if not character_name.strip():
-        character_name = "Unknown"
+        # Combines 'books' and 'povBooks' lists and fetches their names
+        book_urls = character_data.get("books", []) + character_data.get("povBooks", [])
+        books = get_names_from_urls(book_urls)  
+        print_list("Books", books) 
 
-    print(f"\nCharacter Information:")
-    print(f"Name/Alias: {character_name}")
-
-    # Print the names of the houses the character is allegiant to
-    allegiances = name_finder(got_dj.get("allegiances", []))
-    if allegiances:
-        print("\nAllegiances:")
-        for house in allegiances:
-            print(house)
-    else:
-        print("\nAllegiances: None")
-
-    # Print the names of the books the character appears in
-    books = name_finder(got_dj.get("books", []))
-    if books:
-        print("\nBooks:")
-        for book in books:
-            print(book)
-    else:
-        print("\nBooks: None")
+    except requests.HTTPError as http_err:
+        print(f"HTTP error occurred: {http_err}")  
+    except Exception as err:
+        print(f"An error occurred: {err}")  
 
 if __name__ == "__main__":
     main()
