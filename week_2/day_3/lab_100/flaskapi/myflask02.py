@@ -13,6 +13,10 @@ def hello_name(name):
     ## V2 STYLE STRING FORMATTER - return "Hello {}".format(name)
     ## OLD STYLE STRING FORMATTER - return "Hello %s!" % name
 
+@app.route("/characters/<somename>")
+def alpha(somename):
+    return f"You know nothing {somename}"
+
 if __name__ == "__main__":
    app.run(host="0.0.0.0", port=2224, debug=True) # runs the application
 
