@@ -1,0 +1,11 @@
+<!DOCTYPE html>
+<html>
+    <body>
+        <form action="{{ url_for('deleterec') }}" method="POST">
+            <h3>Delete Student Information</h3>
+            Enter the Name of the Student to Delete:<br />
+            <input type="text" name="nm" /><br />
+            <input type="submit" value="Delete" /><br />
+        </form>
+    </body>
+</html>

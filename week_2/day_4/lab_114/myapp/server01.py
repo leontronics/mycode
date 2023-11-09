@@ -61,10 +61,37 @@ def list_students():
     con.row_factory = sql.Row
     
     cur = con.cursor()
-    cur.execute("SELECT * from students")           # pull all information from the table "students"
+    cur.execute("SELECT * from students")           
     
     rows = cur.fetchall()
-    return render_template("list.html",rows = rows) # return all of the sqliteDB info as HTML
+    return render_template("list.html",rows = rows) 
+
+@app.route('/deletestudent')
+def delete_student():
+    return render_template('delete_student.html')
+
+# Route to handle the deletion of a student
+@app.route('/deleterec', methods=['POST'])
+def deleterec():
+    try:
+        # Get the student's name or ID from the form
+        nm = request.form['nm']
+
+        # Connect to the sqliteDB
+        with sql.connect("database.db") as con:
+            cur = con.cursor()
+
+            # Delete the student record from the database
+            cur.execute("DELETE FROM students WHERE name = ?", (nm,))
+            con.commit()
+            msg = "Record successfully deleted"
+    except:
+        con.rollback()
+        msg = "Error in delete operation"
+    finally:
+        con.close()
+        return render_template("result.html", msg=msg)
+
 
 if __name__ == '__main__':
     try:
