@@ -99,4 +99,4 @@ class CommandProcessor:
 
     def exit_command(self, _):
         print('Thank you for playing. May the Force be with You!\n')
-        self.game.exit(0)
+        exit(0)

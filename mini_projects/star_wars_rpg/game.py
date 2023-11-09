@@ -98,7 +98,7 @@ Use your skills wisely to defeat enemies, collect items, and save your allies!
             if self.check_game_over():
                 break
 
-    def start_trap_timer(self, room):
+    def start_trap_timer(self):
         self.trap_active = True  
         timer_thread = threading.Thread(target=self.crush_walls, args=(self.player, self.end_game))
         timer_thread.start()

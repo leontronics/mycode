@@ -37,4 +37,4 @@ class Room:
     def trigger_trap(self, game):
         '''Trigger a trap in the room.'''
         print('As you pick up the access card, you hear the walls starting to move... they are closing in!')
-        game.start_trap_timer(self)
+        game.start_trap_timer()
