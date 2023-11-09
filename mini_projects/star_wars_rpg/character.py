@@ -34,7 +34,6 @@ class Character:
         return highest_damage
 
 class Player(Character):
-    '''Class representing the player character.'''
 
     def __init__(self, start_room, health=100):
         '''Initialize the player with a starting room and health.'''
@@ -74,7 +73,6 @@ class Player(Character):
             self.current_room.trigger_trap(game)
 
 class Enemy(Character):
-    '''Class representing an enemy character.'''
 
     def __init__(self, name, description, health, inventory=None):
         '''Initialize an enemy with a name, description, health, and inventory.'''

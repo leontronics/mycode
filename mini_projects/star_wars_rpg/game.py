@@ -2,6 +2,7 @@ import threading
 import time
 from character import Player, Enemy
 from room import Room
+from command_processor import CommandProcessor
 
 class Game:
 
@@ -15,16 +16,7 @@ class Game:
         self.game_over = False
         self.trap_active = False
         self.stop_trap = False
-        self.command_methods = {
-            'go': self.go_command,
-            'get': self.get_command,
-            'attack': self.attack_command,
-            'map': self.map_command,
-            'look': self.look_command,
-            'free': self.free_command,
-            'use': self.use_command,
-            'exit': self.exit_command
-        }
+        self.command_processor = CommandProcessor(self)
 
     def setup_rooms(self):
         self.initialize_rooms()
@@ -102,78 +94,9 @@ Use your skills wisely to defeat enemies, collect items, and save your allies!
             move = self.get_player_move()
             if self.game_over:
                 break
-            command, argument = self.parse_command(move)
-            self.execute_command(command, argument)
+            self.command_processor.process(move)
             if self.check_game_over():
                 break
-
-    def parse_command(self, move):
-        return move[0], move[1] if len(move) > 1 else None
-
-    def execute_command(self, command, argument):
-        if command in self.command_methods:
-            self.command_methods[command](argument)
-        else:
-            print('Invalid command!')
-
-    def go_command(self, direction):
-        if self.trap_active:
-            print("You can't move! The walls are closing in!")
-        elif direction:
-            self.player.move(direction)
-        else:
-            print('Go where?')
-
-    def get_command(self, item):
-        if item:
-            self.player.get_item(item, self)
-        else:
-            print('Get what?')
-
-    def attack_command(self, enemy_name):
-        if enemy_name:
-            enemy_name = enemy_name.lower()
-            possible_enemies = [enemy for enemy in self.player.current_room.enemies]
-            matching_enemies = [enemy for enemy in possible_enemies if enemy.name.lower() == enemy_name]
-
-            if matching_enemies:
-                self.combat(matching_enemies[0])
-            else:
-                if possible_enemies:
-                    enemy_list = ', '.join(enemy.name for enemy in possible_enemies)
-                    print(f'No enemy with that name here. Enemies present: {enemy_list}')
-                else:
-                    print('There are no enemies here to attack.')
-        else:
-            print('Attack who?')
-
-    def map_command(self, _):
-        print(self.generate_map())
-
-    def look_command(self, _):
-        print(self.player.current_room.get_details())
-
-    def use_command(self, item):
-        if item:
-            item = item.lower()
-            if item == 'access card' and self.player.current_room.name == 'Communications Hub':
-                if 'access card' in self.player.inventory:
-                    print('You quickly use the access card and stop the walls from crushing you!')
-                    self.player.current_room.locked_items['access card'] = False
-                    self.trap_active = False
-                    self.stop_trap = True 
-                else:
-                    print("You don't have an access card to use.")
-            elif item == 'security codes' and self.player.current_room.name == 'Control Room':
-                if 'security codes' in self.player.inventory:
-                    print('You use the security codes to disable the security systems!')
-                else:
-                    print("You don't have the security codes to use.")
-            else:
-                print(f"You can't use {item} here.")
-        else:
-            print('Use what?')
-
 
     def start_trap_timer(self, room):
         self.trap_active = True  
@@ -194,39 +117,9 @@ Use your skills wisely to defeat enemies, collect items, and save your allies!
                 player.health = 0
                 end_game_callback()
 
-
     def end_game(self):
         self.game_over = True
         self.check_game_over()
-
-    def free_command(self, ally_name):
-        if ally_name:
-            ally_name = ally_name.lower()
-            allies_in_room = [ally.lower() for ally in self.player.current_room.allies]
-            if ally_name in allies_in_room:
-                original_ally_name = self.player.current_room.allies[allies_in_room.index(ally_name)]
-                if not self.player.current_room.enemies:
-                    if ally_name == 'leia' and 'security codes' in self.player.inventory:
-                        self.player.inventory.append('Princess Leia')
-                        self.player.current_room.allies.remove(original_ally_name)
-                        print('You have freed Princess Leia! Now escape the Death Star!')
-                    elif ally_name == 'r2-d2' and 'access card' in self.player.inventory:
-                        self.rooms['Control Room'].locked_items['security codes'] = False
-                        self.player.inventory.append('R2-D2')
-                        self.player.current_room.allies.remove(original_ally_name)
-                        print('You have freed R2-D2 and it has unlocked the security codes in the Control Room!')
-                    else:
-                        print(f'You need the proper item to free {original_ally_name}!')
-                else:
-                    print(f"You can't free {original_ally_name} while enemies are in the room!")
-            else:
-                print(f'There is no {ally_name} here to free.')
-        else:
-            print('Free who?')
-
-    def exit_command(self, _):
-        print('Thank you for playing. May the Force be with You!\n')
-        exit(0)
 
     def check_game_over(self):
         return self.check_defeat() or self.check_victory()
