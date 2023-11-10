@@ -2,6 +2,19 @@ window.onload = function () {
     const sendButton = document.getElementById("send-command");
     const userInputField = document.getElementById("user-input");
 
+    const socket = io.connect(
+        location.protocol +
+            "//" +
+            window.location.hostname +
+            ":" +
+            location.port
+    );
+
+    socket.on("game_message", function (data) {
+        const outputDiv = document.getElementById("game-output");
+        outputDiv.innerHTML += "<pre>" + data.message + "</pre>";
+    });
+
     async function updateStatus() {
         let response = await fetch("/status");
         let data = await response.json();
@@ -36,6 +49,17 @@ window.onload = function () {
         }
     }
 
+    async function updateMessages() {
+        let response = await fetch("/messages");
+        let data = await response.json();
+        if (data.messages.length > 0) {
+            const outputDiv = document.getElementById("game-output");
+            data.messages.forEach((message) => {
+                outputDiv.innerHTML += "<pre>" + message + "</pre>";
+            });
+        }
+    }
+
     sendButton.addEventListener("click", sendCommand);
 
     userInputField.addEventListener("keypress", function (event) {
@@ -44,5 +68,7 @@ window.onload = function () {
             sendCommand();
         }
     });
+
     updateStatus();
+    setInterval(updateMessages, 1000);
 };

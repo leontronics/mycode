@@ -1,11 +1,14 @@
 #!/usr/bin/python3
 from flask import Flask, render_template, request, jsonify
+from extensions import socketio
 from game.game import Game
 
 app = Flask(__name__)
 app.secret_key = 'your_secret_key_here'
+socketio.init_app(app)
 
 game = Game()
+game.state.game_interface = 'web'
 
 @app.route('/')
 def index():
@@ -31,5 +34,11 @@ def execute_command():
     game.clear_messages()
     return jsonify(messages=messages, game_over=game.state.game_over)
 
+@app.route('/messages', methods=['GET'])
+def get_messages():
+    messages = game.get_messages()
+    game.clear_messages()
+    return jsonify(messages=messages)
+
 if __name__ == '__main__':
-    app.run(host="0.0.0.0", port=3000, debug=True)
+    socketio.run(app, host="0.0.0.0", port=3000, debug=True)

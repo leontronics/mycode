@@ -1,13 +1,14 @@
 import json
 
 class GameState:
-    def __init__(self, game=None):
+    def __init__(self, game=None, game_interface='console'):
         self.game = game
         self.rooms = {}
         self.player = None
         self.game_over = False
         self.trap_active = False
         self.stop_trap = False
+        self.game_interface = game_interface
 
     def serialize(self):
         return json.dumps(self.__dict__)

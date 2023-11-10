@@ -27,7 +27,8 @@ class CommandProcessor:
     def parse_command(self, move):
         if not move:
             return None, None
-        return move[0], move[1] if len(move) > 1 else None
+        return move[0], ' '.join(move[1:]) if len(move) > 1 else None
+
 
     def go_command(self, direction):
         if self.game.state.trap_active:

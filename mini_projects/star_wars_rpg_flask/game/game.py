@@ -1,5 +1,6 @@
 import threading
 import time
+from extensions import socketio
 from .character import Player, Enemy
 from .room import Room, RoomManager
 from .map_manager import MapManager
@@ -121,25 +122,25 @@ Use your skills wisely to defeat enemies, collect items, and save your allies!
             if self.check_game_over():
                 break
 
+    def web_output(self, message):
+        socketio.emit('game_message', {'message': message})
+
     def process_messages(self):
         for message in self.get_messages():
-            self.console_output(message)
+            if self.state.game_interface == 'console':
+                self.console_output(message)
+            elif self.state.game_interface == 'web':
+                self.web_output(message)
         self.clear_messages()
 
     def console_input(self, prompt=''):
-        '''Get input from the console.'''
         move = ''
         while not move and not self.state.game_over:
             move = input(prompt).strip()
         return move.lower().split(' ', 1)
 
     def console_output(self, message):
-        '''Send output to the console.'''
         print(message)
-
-    def web_output(message):
-        '''This function would send output back to the web client'''
-        pass
 
     def trigger_trap(self, message):
         self.start_trap_timer()
