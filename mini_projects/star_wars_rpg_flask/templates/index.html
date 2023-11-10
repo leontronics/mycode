@@ -13,9 +13,7 @@
     <body>
         <h1>Star Wars RPG</h1>
 
-        <div id="game-instructions">{{ instructions|safe }}</div>
-
-        <div id="game-status">{{ game_status|safe }}</div>
+        <div id="game-instructions">{{ full_message|safe }}</div>
 
         <div id="game-output">
             <!-- Game messages will be displayed here -->

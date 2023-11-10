@@ -9,8 +9,12 @@ game = Game()
 
 @app.route('/')
 def index():
-    game_instructions = game.show_instructions()
-    return render_template('index.html', instructions=game_instructions)
+    game.show_instructions()
+    game.show_status()
+    all_messages = game.get_messages()
+    full_message = "<br>".join(all_messages)
+    game.clear_messages()
+    return render_template('index.html', full_message=full_message)
 
 
 @app.route('/command', methods=['POST'])
