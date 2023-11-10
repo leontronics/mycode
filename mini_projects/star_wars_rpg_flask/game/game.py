@@ -66,11 +66,11 @@ Use your skills wisely to defeat enemies, collect items, and save your allies!
         self.add_message(instructions)
 
     def show_status(self):
-        status = '---------------------------\n'
+        status = '------------------------------------------------\n'
         status += f'Health: {self.state.player.health}\n'
         status += f'Inventory: {self.state.player.inventory}\n'
         status += f'Rescued Allies: {self.state.player.allies_rescued}\n'
-        status += "---------------------------"
+        status += "------------------------------------------------"
         self.add_message(status)
 
     def combat(self, enemy):

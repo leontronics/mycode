@@ -1,5 +1,6 @@
 window.onload = function () {
     const sendButton = document.getElementById("send-command");
+    const restartButton = document.getElementById("restart-game");
     const userInputField = document.getElementById("user-input");
 
     const socket = io.connect(
@@ -41,6 +42,9 @@ window.onload = function () {
         if (data.game_over) {
             userInputField.disabled = true;
             sendButton.disabled = true;
+            restartButton.style.display = "block";
+        } else {
+            restartButton.style.display = "none";
         }
     }
 
@@ -51,6 +55,10 @@ window.onload = function () {
             event.preventDefault();
             sendCommand();
         }
+    });
+
+    restartButton.addEventListener("click", function () {
+        window.location.href = "/restart";
     });
 
     updateStatus();

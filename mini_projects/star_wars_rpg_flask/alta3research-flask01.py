@@ -1,5 +1,5 @@
 #!/usr/bin/python3
-from flask import Flask, render_template, request, jsonify
+from flask import Flask, render_template, request, jsonify, redirect, url_for
 from extensions import socketio
 from game.game import Game
 
@@ -45,6 +45,14 @@ def get_messages():
     messages = game.get_messages()
     game.clear_messages()
     return jsonify(messages=messages)
+
+@app.route('/restart', methods=['GET'])
+def restart_game():
+    global game  
+    game = Game()
+    game.state.game_interface = 'web'
+    return redirect(url_for('index'))
+
 
 if __name__ == '__main__':
     socketio.run(app, host="0.0.0.0", port=3000, debug=True)
