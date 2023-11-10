@@ -18,16 +18,14 @@
             <pre>{{ instructions|safe }}</pre>
         </div>
 
-        <div id="game-status">
-            <!-- Game status will be updated here -->
-        </div>
+        <div id="game-status"></div>
 
-        <div id="game-output">
-            <!-- Game messages will be displayed here -->
-        </div>
+        <div id="game-output"></div>
 
         <input type="text" id="user-input" placeholder="Enter your command" />
-        <button id="send-command" class="btn btn-primary">Send Command</button>
+        <button id="send-command" class="btn btn-secondary">
+            Send Command
+        </button>
         <script src="https://cdn.socket.io/4.0.0/socket.io.min.js"></script>
         <script src="../static/script.js"></script>
     </body>
