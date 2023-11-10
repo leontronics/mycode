@@ -2,7 +2,7 @@ import threading
 import time
 from extensions import socketio
 from .character import Player, Enemy
-from .room import Room, RoomManager
+from .room import RoomManager
 from .map_manager import MapManager
 from .command_processor import CommandProcessor
 from .game_state import GameState

@@ -12,6 +12,7 @@ game.state.game_interface = 'web'
 
 @app.route('/')
 def index():
+    socketio.emit('game_message', {'message': 'Welcome to the game!'})
     game.show_instructions()
     instructions = "<br>".join(game.get_messages())
     game.clear_messages()
@@ -32,7 +33,12 @@ def execute_command():
     messages = game.get_messages()
     game_over = game.check_game_over()  
     game.clear_messages()
-    return jsonify(messages=messages, game_over=game.state.game_over)
+
+    for message in messages:
+        socketio.emit('game_message', {'message': message})
+
+    return jsonify(game_over=game.state.game_over)
+
 
 @app.route('/messages', methods=['GET'])
 def get_messages():

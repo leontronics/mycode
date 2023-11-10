@@ -12,6 +12,7 @@ window.onload = function () {
 
     socket.on("game_message", function (data) {
         const outputDiv = document.getElementById("game-output");
+        outputDiv.innerHTML = "";
         outputDiv.innerHTML += "<pre>" + data.message + "</pre>";
     });
 
@@ -34,29 +35,12 @@ window.onload = function () {
         });
 
         let data = await response.json();
-        const outputDiv = document.getElementById("game-output");
-        outputDiv.innerHTML = "";
-        data.messages.forEach((message) => {
-            outputDiv.innerHTML += "<pre>" + message + "</pre>";
-        });
-
         userInputField.value = "";
         updateStatus();
 
         if (data.game_over) {
             userInputField.disabled = true;
             sendButton.disabled = true;
-        }
-    }
-
-    async function updateMessages() {
-        let response = await fetch("/messages");
-        let data = await response.json();
-        if (data.messages.length > 0) {
-            const outputDiv = document.getElementById("game-output");
-            data.messages.forEach((message) => {
-                outputDiv.innerHTML += "<pre>" + message + "</pre>";
-            });
         }
     }
 
@@ -70,5 +54,4 @@ window.onload = function () {
     });
 
     updateStatus();
-    setInterval(updateMessages, 1000);
 };
