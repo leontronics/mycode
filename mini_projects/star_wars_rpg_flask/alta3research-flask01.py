@@ -4,7 +4,6 @@ from extensions import socketio
 from game.game import Game
 
 app = Flask(__name__)
-app.secret_key = 'your_secret_key_here'
 socketio.init_app(app)
 
 game = Game()
