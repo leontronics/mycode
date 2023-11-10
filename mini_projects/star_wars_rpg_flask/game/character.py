@@ -1,0 +1,82 @@
+import random
+
+class Character:
+
+    BASE_DAMAGE = 0
+    DAMAGE_RANGE_UPGRADE = 10
+    WEAPONS_DAMAGE = {
+        'blaster': (20, 30),
+        'lightsaber': (50, 60)
+    }
+
+    def __init__(self, name, health=100, inventory=None):
+        '''Initialize a character with a name, health, and inventory.'''
+        self.name = name
+        self.health = health
+        self.inventory = [] if inventory is None else inventory
+
+    def attack(self, target):
+        '''Attack another character and deal damage.'''
+        weapon_damage = self.get_highest_weapon_damage()
+        damage = random.randint(*weapon_damage)
+        result = {
+            'attacker': self.name,
+            'target': target.name,
+            'damage': damage,
+            'message': f'{self.name} attacks {target.name} and deals {damage} damage.',
+            'defeated': False
+        }
+        return result
+
+    def get_highest_weapon_damage(self):
+        '''Get the highest damage range based on the character's inventory.'''
+        highest_damage = (self.BASE_DAMAGE, self.BASE_DAMAGE + self.DAMAGE_RANGE_UPGRADE)
+        for weapon in sorted(self.WEAPONS_DAMAGE, key=lambda w: self.WEAPONS_DAMAGE[w][1], reverse=True):
+            if weapon in self.inventory:
+                highest_damage = self.WEAPONS_DAMAGE[weapon]
+                break
+        return highest_damage
+
+class Player(Character):
+
+    def __init__(self, start_room, health=100):
+        '''Initialize the player with a starting room and health.'''
+        super().__init__('Player', health)
+        self.current_room = start_room
+        self.allies_rescued = []
+
+    def move(self, direction):
+        '''Move the player to a different room.'''
+        if direction in self.current_room.connected_rooms:
+            self.current_room = self.current_room.connected_rooms[direction]
+            return {'new_room': self.current_room, 'message': f'You move to the {self.current_room.name}.'}
+        else:
+            return {'new_room': None, 'message': "You can't go that way!"}
+
+    def get_item(self, item):
+        '''Attempt to pick up an item.'''
+        if self.current_room.enemies:
+            return {'success': False, 'message': "You can't pick up items while enemies are in the room!"}
+        if item in self.current_room.items:
+            return self.attempt_item_pickup(item)
+        else:
+            return {'success': False, 'message': f"Can't get {item}!"}
+
+    def attempt_item_pickup(self, item):
+        '''Private method to handle item pickup logic.'''
+        if item == 'security codes' and 'R2-D2' not in self.allies_rescued:
+            return {'success': False, 'message': "You can't get the security codes without R2-D2's help!"}
+        if item in self.current_room.locked_items and self.current_room.locked_items[item]:
+            return {'success': False, 'message': f'The {item} is locked and cannot be picked up yet.'}
+        return {'success': True, 'item': item, 'message': f'{item} got!'}
+
+class Enemy(Character):
+
+    def __init__(self, name, description, health, inventory=None):
+        '''Initialize an enemy with a name, description, health, and inventory.'''
+        super().__init__(name, health, inventory)
+        self.description = description
+
+    def __str__(self):
+        '''Return a string representation of the enemy.'''
+        return f'{self.name} - {self.description}'
