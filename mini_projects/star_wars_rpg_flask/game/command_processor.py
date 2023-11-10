@@ -68,7 +68,6 @@ class CommandProcessor:
         else:
             self.add_message('Attack who?')
 
-
     def map_command(self, _):
         self.add_message(self.game.map_manager.generate_map())
 
@@ -120,7 +119,6 @@ class CommandProcessor:
                 self.add_message(f'There is no {ally_name} here to free.')
         else:
             self.add_message('Free who?')
-
 
     def exit_command(self, _):
         self.add_message('Thank you for playing. May the Force be with You!\n')

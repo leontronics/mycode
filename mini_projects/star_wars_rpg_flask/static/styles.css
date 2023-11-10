@@ -1,0 +1,18 @@
+#game-instructions,
+#game-status {
+    white-space: pre-wrap;
+    background-color: #f8f9fa;
+    border: 1px solid #dee2e6;
+    padding: 15px;
+    margin-bottom: 20px;
+}
+#game-output {
+    background-color: #e9ecef;
+    border: 1px solid #ced4da;
+    padding: 15px;
+    min-height: 100px;
+}
+#user-input {
+    width: 100%;
+    margin-bottom: 10px;
+}

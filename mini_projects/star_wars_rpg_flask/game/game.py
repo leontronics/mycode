@@ -159,7 +159,6 @@ Use your skills wisely to defeat enemies, collect items, and save your allies!
             time.sleep(1)
             countdown -= 1
 
-
         if not self.state.stop_trap and self.state.trap_active and 'access card' in self.state.player.inventory:
             crush_message = "You didn't act fast enough and the walls crushed you!"
             self.add_message(crush_message)

@@ -9,18 +9,25 @@
             integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN"
             crossorigin="anonymous"
         />
+        <link rel="stylesheet" href="../static/styles.css" />
     </head>
     <body>
         <h1>Star Wars RPG</h1>
 
-        <div id="game-instructions">{{ full_message|safe }}</div>
+        <div id="game-instructions">
+            <pre>{{ instructions|safe }}</pre>
+        </div>
+
+        <div id="game-status">
+            <!-- Game status will be updated here -->
+        </div>
 
         <div id="game-output">
             <!-- Game messages will be displayed here -->
         </div>
 
         <input type="text" id="user-input" placeholder="Enter your command" />
-        <button id="send-command">Send Command</button>
+        <button id="send-command" class="btn btn-primary">Send Command</button>
         <script src="../static/script.js"></script>
     </body>
 </html>
